@@ -360,3 +360,98 @@ from
     pedido_detalhe;
 
 -- drop database softblue;
+
+
+-- Exiba uma lista com os títulos dos cursos da Softblue e o tipo de curso ao lado;
+SELECT 
+    curso.curso, tipo.tipo
+FROM
+    curso
+        INNER JOIN
+    tipo ON curso.tipo = tipo.codigo;
+
+-- Exiba uma lista com os títulos dos cursos da Softblue, tipo do curso, nome do instrutor responsável pelo mesmo e telefone;
+SELECT 
+    curso.curso,
+    tipo.tipo,
+    instrutor.instrutor,
+    instrutor.telefone
+FROM
+    curso
+        INNER JOIN
+    tipo ON curso.tipo = tipo.codigo
+        INNER JOIN
+    instrutor ON curso.instrutor = instrutor.codigo;
+
+-- Exiba uma lista com o código e data e hora dos pedidos e os códigos dos cursos de cada pedido;
+SELECT 
+    pedido.codigo, pedido.datahora, pedido_detalhe.curso
+FROM
+    pedido
+        INNER JOIN
+    pedido_detalhe ON pedido.codigo = pedido_detalhe.pedido;
+
+-- Exiba uma lista com o código e data e hora dos pedidos e os títulos dos cursos de cada pedido;
+SELECT 
+    pedido.codigo, pedido.datahora, curso.curso
+FROM
+    pedido
+        INNER JOIN
+    pedido_detalhe ON pedido.codigo = pedido_detalhe.pedido
+        INNER JOIN
+    curso ON curso.codigo = pedido_detalhe.CURSO;
+
+-- Exiba uma lista com o código e data e hora dos pedidos, nome do aluno e os títulos dos cursos de cada pedido;
+SELECT 
+    pedido.codigo, pedido.datahora, aluno.aluno, curso.curso
+FROM
+    curso
+        INNER JOIN
+    pedido_detalhe ON pedido_detalhe.curso = curso.codigo
+        INNER JOIN
+    pedido ON pedido.codigo = pedido_detalhe.pedido
+        INNER JOIN
+    aluno ON aluno.codigo = pedido.aluno;
+    
+-- Crie uma visão que traga o título e preço somente dos cursos de programação da Softblue;
+CREATE VIEW cursos_programação AS
+    SELECT 
+        curso, valor
+    FROM
+        curso
+            INNER JOIN
+        tipo ON tipo.codigo = curso.tipo
+    WHERE
+        tipo.tipo = 'Programação';
+                
+    SELECT 
+    *
+FROM
+    cursos_programação;
+    
+	-- drop view cursos_programação;
+
+
+-- Crie uma visão que traga os títulos dos cursos, tipo do curso e nome do instrutor;
+CREATE VIEW curso_instrutor AS
+    SELECT 
+        curso.curso, tipo.tipo, instrutor.instrutor
+    FROM
+        curso
+            INNER JOIN
+        instrutor ON instrutor.codigo = curso.instrutor
+            INNER JOIN
+        tipo ON tipo.codigo = curso.tipo;
+        
+    select * from curso_instrutor;    
+
+-- Crie uma visão que exiba os pedidos realizados, informando o nome do aluno, data e código do pedido;
+CREATE VIEW pedido_aluno AS
+    SELECT 
+        pedido.codigo, aluno.aluno, pedido.datahora
+    FROM
+        pedido
+            INNER JOIN
+        aluno ON pedido.aluno = aluno.codigo;
+    
+    select * from pedido_aluno;
