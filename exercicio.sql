@@ -484,8 +484,14 @@ SELECT COUNT(*) FROM PEDIDO_DETALHE; -- gabarito
 
 
 -- Exiba o valor total já arrecadado pelos cursos vendidos pela Softblue;
+select sum(valor) from pedido_detalhe;
+
 -- Exiba o valor médio cobrado por curso para o pedido cujo CODIGO é 2;
+select avg(valor) from pedido_detalhe where pedido = 2;
+
 -- Exiba o valor do curso mais caro da Softblue;
+select max(valor) from curso;
+
 -- Exiba o valor do curso mais barato da Softblue;
 -- Exiba o valor total de cada pedido realizado na Softblue;
 -- Exiba os nomes dos instrutores da Softblue e a quantidade de cursos que cada um tem sob sua responsabilidade;
