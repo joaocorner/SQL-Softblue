@@ -458,25 +458,6 @@ CREATE VIEW pedido_aluno AS
 
 
 -- Selecione os nomes de todos os alunos que já fizeram alguma matrícula na Softblue, sem repetição;
--- Exiba o nome do aluno mais antigo da Softblue;
--- Exiba o nome do aluno mais recente da Softblue;
--- Exiba o nome do terceiro aluno mais antigo da Softblue;
--- Exiba a quantidade de cursos que já foram vendidos pela Softblue;
--- Exiba o valor total já arrecadado pelos cursos vendidos pela Softblue;
--- Exiba o valor médio cobrado por curso para o pedido cujo CODIGO é 2;
--- Exiba o valor do curso mais caro da Softblue;
--- Exiba o valor do curso mais barato da Softblue;
--- Exiba o valor total de cada pedido realizado na Softblue;
--- Exiba os nomes dos instrutores da Softblue e a quantidade de cursos que cada um tem sob sua responsabilidade;
--- Exiba o número do pedido, nome do aluno e valor para todos os pedidos realizados na Softblue cujo valor total sejam maiores que 500;
--- Exiba o número do pedido, nome do aluno e quantos cursos foram comprados no pedido para todos os pedidos realizados na Softblue que compraram dois ou mais cursos;
--- Exiba o nome e endereço de todos os alunos que morem em Avenidas (Av.);
--- Exiba os nomes dos cursos de Java da Softblue;
--- Utilizando subquery, exiba uma lista com os nomes dos cursos disponibilizados pela Softblue informando para cada curso qual o seu menor valor de venda já praticado;
--- Utilizando subquery e o parâmetro IN, exiba os nomes dos cursos disponibilizados pela Softblue cujo tipo de curso seja 'Programação';
--- Utilizando subquery e o parâmetro EXISTS, exiba novamente os nomes dos cursos disponibilizados pela Softblue cujo tipo de curso seja 'Programação';
--- Exiba uma lista com os nomes dos instrutores da Softblue e ao lado o total acumulado das vendas referente aos cursos pelo qual o instrutor é responsável;
--- Crie uma visão que exiba os nomes dos alunos e quanto cada um já comprou em cursos;-- Selecione os nomes de todos os alunos que já fizeram alguma matrícula na Softblue, sem repetição;
 SELECT DISTINCT
     (aluno.aluno)
 FROM
@@ -498,6 +479,8 @@ select distinct(aluno.aluno) from aluno inner join pedido on pedido.aluno = alun
 SELECT DISTINCT(ALUNO.ALUNO) FROM PEDIDO INNER JOIN ALUNO ON PEDIDO.ALUNO = ALUNO.CODIGO ORDER BY DATAHORA ASC LIMIT 1 OFFSET 2; -- gabarito
 
 -- Exiba a quantidade de cursos que já foram vendidos pela Softblue;
+select count(*) from pedido;
+SELECT COUNT(*) FROM PEDIDO_DETALHE; -- gabarito
 
 
 -- Exiba o valor total já arrecadado pelos cursos vendidos pela Softblue;
