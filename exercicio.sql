@@ -493,9 +493,23 @@ select avg(valor) from pedido_detalhe where pedido = 2;
 select max(valor) from curso;
 
 -- Exiba o valor do curso mais barato da Softblue;
+select min(valor) from curso;
+
 -- Exiba o valor total de cada pedido realizado na Softblue;
+select sum(valor) from pedido_detalhe group by pedido;
+SELECT PEDIDO, SUM(VALOR) FROM PEDIDO_DETALHE GROUP BY PEDIDO;  -- gabarito
+
 -- Exiba os nomes dos instrutores da Softblue e a quantidade de cursos que cada um tem sob sua responsabilidade;
--- Exiba o número do pedido, nome do aluno e valor para todos os pedidos realizados na Softblue cujo valor total sejam maiores que 500;
+select instrutor.instrutor, count(curso) from instrutor inner join curso on curso.instrutor = instrutor.codigo group by curso.instrutor;
+SELECT INSTRUTOR.INSTRUTOR, COUNT(*) FROM CURSO INNER JOIN INSTRUTOR ON CURSO.INSTRUTOR = INSTRUTOR.CODIGO GROUP BY INSTRUTOR; -- gabarito
+select * from instrutor;
+select * from curso;
+
+-- Exiba os tipos dos cursos da Softblue e a quantidade que cada um tem;
+select tipo.tipo, count(curso) from tipo inner join curso on curso.tipo = tipo.codigo group by curso.tipo;
+select * from tipo;
+select * from curso;
+
 -- Exiba o número do pedido, nome do aluno e quantos cursos foram comprados no pedido para todos os pedidos realizados na Softblue que compraram dois ou mais cursos;
 -- Exiba o nome e endereço de todos os alunos que morem em Avenidas (Av.);
 -- Exiba os nomes dos cursos de Java da Softblue;
