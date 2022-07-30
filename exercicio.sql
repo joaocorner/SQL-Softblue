@@ -511,10 +511,56 @@ select * from tipo;
 select * from curso;
 
 -- Exiba o número do pedido, nome do aluno e quantos cursos foram comprados no pedido para todos os pedidos realizados na Softblue que compraram dois ou mais cursos;
+SELECT 
+    pedido, aluno.aluno, COUNT(curso)
+FROM
+    pedido_detalhe
+        INNER JOIN
+    pedido ON pedido.codigo = pedido
+        INNER JOIN
+    aluno ON aluno.codigo = pedido.aluno
+GROUP BY pedido
+HAVING COUNT(curso) >= 2;
+
+SELECT 
+    PEDIDO, ALUNO.ALUNO, COUNT(*)
+FROM
+    PEDIDO_DETALHE
+        INNER JOIN
+    PEDIDO ON PEDIDO_DETALHE.PEDIDO = PEDIDO.CODIGO
+        INNER JOIN
+    ALUNO ON PEDIDO.ALUNO = ALUNO.CODIGO
+GROUP BY PEDIDO
+HAVING COUNT(*) > 1; -- gabarito
+
+
 -- Exiba o nome e endereço de todos os alunos que morem em Avenidas (Av.);
+SELECT 
+    aluno, endereco
+FROM
+    aluno
+WHERE
+    endereco LIKE 'Av.%';
+
 -- Exiba os nomes dos cursos de Java da Softblue;
--- Utilizando subquery, exiba uma lista com os nomes dos cursos disponibilizados pela Softblue informando para cada curso qual o seu menor valor de venda já praticado;
+SELECT 
+    curso
+FROM
+    curso
+WHERE
+    curso LIKE '%java%';
+
+-- Utilizando subquery, exiba uma lista com os nomes dos cursos disponibilizados pela Softblue
+-- informando para cada curso qual o seu menor valor de venda já praticado;
+select curso, (select min(valor) from pedido_detalhe where pedido_detalhe.curso=curso.codigo) as menorvalor from curso; -- gabarito
+
 -- Utilizando subquery e o parâmetro IN, exiba os nomes dos cursos disponibilizados pela Softblue cujo tipo de curso seja 'Programação';
+select curso from curso where tipo in (select codigo from tipo where tipo = "programação"); -- gabarito
+
 -- Utilizando subquery e o parâmetro EXISTS, exiba novamente os nomes dos cursos disponibilizados pela Softblue cujo tipo de curso seja 'Programação';
+select curso from curso where exists (select codigo from tipo where tipo.codigo = curso.tipo and tipo.tipo = 'Programação'); -- gabarito
+
 -- Exiba uma lista com os nomes dos instrutores da Softblue e ao lado o total acumulado das vendas referente aos cursos pelo qual o instrutor é responsável;
+
+
 -- Crie uma visão que exiba os nomes dos alunos e quanto cada um já comprou em cursos;
