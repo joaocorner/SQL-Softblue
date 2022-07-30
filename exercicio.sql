@@ -561,6 +561,28 @@ select curso from curso where tipo in (select codigo from tipo where tipo = "pro
 select curso from curso where exists (select codigo from tipo where tipo.codigo = curso.tipo and tipo.tipo = 'Programação'); -- gabarito
 
 -- Exiba uma lista com os nomes dos instrutores da Softblue e ao lado o total acumulado das vendas referente aos cursos pelo qual o instrutor é responsável;
+select instrutor.instrutor, sum(pedido_detalhe.valor) as total_vendas
+from instrutor
+inner join curso on curso.instrutor = instrutor.codigo
+inner join pedido_detalhe on pedido_detalhe.curso=curso.codigo
+group by instrutor;
 
+SELECT INSTRUTOR, (SELECT SUM(PEDIDO_DETALHE.VALOR)
+FROM PEDIDO_DETALHE 
+INNER JOIN CURSO ON PEDIDO_DETALHE.CURSO = CURSO.CODIGO
+WHERE CURSO.INSTRUTOR = INSTRUTOR.CODIGO) AS TOTAL_DE_VENDAS FROM INSTRUTOR; -- gabarito
 
 -- Crie uma visão que exiba os nomes dos alunos e quanto cada um já comprou em cursos;
+create view compras_alunos as SELECT aluno.aluno, SUM(pedido_detalhe.valor) as total_compras
+FROM aluno
+left JOIN pedido ON pedido.aluno = aluno.codigo
+left JOIN pedido_detalhe ON pedido_detalhe.pedido = pedido.codigo
+group by aluno
+order by aluno.codigo;
+
+create view compras_aluno as SELECT ALUNO,
+(SELECT SUM(PEDIDO_DETALHE.VALOR)
+FROM PEDIDO_DETALHE 
+INNER JOIN PEDIDO ON PEDIDO_DETALHE.PEDIDO = PEDIDO.CODIGO 
+WHERE PEDIDO.ALUNO = ALUNO.CODIGO) AS TOTAL_DE_COMPRAS 
+FROM ALUNO; -- gabarito
