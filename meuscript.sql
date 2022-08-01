@@ -237,4 +237,26 @@ select user from mysql.user; -- checar a partir do usuario root todos os usuario
 
 show grants for 'jao'@'%'; -- consultando o que o usuario tem acesso
 
-grant * to curso_sql.* from 'jao'@'%';
+grant * to curso_sql.* from 'jao'@'%'; -- NÃO FUNCIONA COM *
+
+-- ACID
+
+show engines;
+
+CREATE TABLE contas_bancarias (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    titular VARCHAR(45) NOT NULL,
+    saldo DOUBLE NOT NULL,
+    PRIMARY KEY (id)
+)  ENGINE=INNODB;
+
+insert into contas_bancarias (titular, saldo) values ('André', 1000);
+insert into contas_bancarias (titular, saldo) values ('Carlos', 2000);
+
+select * from contas_bancarias;
+
+start transaction;
+update contas_bancarias set saldo = saldo - 100 where id = 1;
+update contas_bancarias set saldo = saldo + 100 where id = 2;
+-- rollback; -- ou commit pra confirmar a transação, rollback pra cancelar 
+commit; -- liberado pra uso em outras transações
