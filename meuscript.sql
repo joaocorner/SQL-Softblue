@@ -207,3 +207,34 @@ select nome from funcionarios where departamento = 'juridico';
 select nome from funcionarios where departamento in (select departamento from funcionarios group by departamento having avg(salario) > 2000);
 
 
+
+create user 'jao'@'192.168.0.1' identified by '123456'; -- o computador só consegue se conectar através do ip específico
+create user 'jao'@'%' identified by '123456'; -- pode se conectar a partir de qualquer endereço de ip
+
+create user 'jao'@'localhost' identified by '123456'; -- só o próprio computador pode conectar;
+grant all on curso_sql.* to 'jao'@'localhost';
+
+create user 'jao'@'%' identified by 'jaoviagem';
+grant select on curso_sql.* to 'jao'@'%'; -- acesso liberado se estiver viajando por exemplo, aí só consegue ler se alguém pegar a senha
+grant insert on curso_sql.funcionarios to 'jao'@'%'; -- libera acesso pra inserir dados de qq IP só na tabela funcionarios
+
+revoke insert on curso_sql.funcionarios from 'jao'@'%'; -- revoga acesso pra inserir dados na tabela funcionarios;
+revoke select on curso_sql.salarios from 'jao'@'%'; -- não pode tirar só de um se deu acesso pra todos, tem que colocar um por um
+revoke select on curso_sql.* from 'jao'@'%';
+
+grant insert on curso_sql.funcionarios to 'jao'@'%';
+grant select on curso_sql.veiculos to 'jao'@'%';
+
+revoke select on curso_sql.veiculos from 'jao'@'%';
+revoke insert on curso_sql.funcionarios from 'jao'@'%';
+
+revoke all on curso_sql.* from 'jao'@'localhost';
+
+drop user 'jao'@'%';
+drop user 'jao'@'localhost';
+
+select user from mysql.user; -- checar a partir do usuario root todos os usuarios criados
+
+show grants for 'jao'@'%'; -- consultando o que o usuario tem acesso
+
+grant * to curso_sql.* from 'jao'@'%';
