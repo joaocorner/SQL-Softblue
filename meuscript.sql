@@ -260,3 +260,60 @@ update contas_bancarias set saldo = saldo - 100 where id = 1;
 update contas_bancarias set saldo = saldo + 100 where id = 2;
 -- rollback; -- ou commit pra confirmar a transação, rollback pra cancelar 
 commit; -- liberado pra uso em outras transações
+
+-- criação de stored procedures e triggers
+
+
+CREATE TABLE pedidos
+(
+	id int unsigned not null auto_increment,
+    descricao varchar(100) not null,
+    valor double not null default '0',
+    pago varchar(3) not null default 'Não',
+    PRIMARY KEY (id)
+);
+
+INSERT INTO pedidos (descricao, valor) VALUES ('TV', 3000);
+INSERT INTO pedidos (descricao, valor) VALUES ('Geladeira', 1400);
+INSERT INTO pedidos (descricao, valor) VALUES ('DVD Player', 300);
+
+/* 
+Criar Stored Procedures pelo menu lateral, com este SQL:
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM pedidos WHERE pago = 'Não';
+*/
+
+SELECT * FROM pedidos;
+CALL limpa_pedidos();
+
+CREATE TABLE estoque
+(
+	id int unsigned not null auto_increment,
+    descricao varchar(50) not null,
+    quantidade int not null,
+    PRIMARY KEY (id)
+);
+
+CREATE TRIGGER gatilho_limpa_pedidos
+BEFORE INSERT -- poderia ser AFTER/BEFORE INSERT/UPDATE/DELETE
+ON estoque
+FOR EACH ROW -- para cada linha
+CALL limpa_pedidos();
+-- drop trigger limpa_pedidos; -- para apagar o trigger
+
+
+SELECT * FROM pedidos;
+INSERT INTO pedidos (descricao, valor) VALUES ('TV', 3000);
+INSERT INTO pedidos (descricao, valor) VALUES ('Geladeira', 1400);
+INSERT INTO pedidos (descricao, valor) VALUES ('DVD Player', 300);
+SELECT * FROM pedidos;
+UPDATE pedidos SET pago = 'Sim' WHERE id = 11;
+SELECT * FROM pedidos;
+
+INSERT INTO estoque (descricao, quantidade) VALUES ('Fogão', 5);
+SELECT * FROM pedidos;
+SELECT * FROM estoque;
+
+INSERT INTO estoque (descricao, quantidade) VALUES ('Forno', 3);
+SELECT * FROM pedidos;
+SELECT * FROM estoque;
